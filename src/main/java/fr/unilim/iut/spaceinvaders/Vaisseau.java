@@ -10,8 +10,20 @@ public class Vaisseau {
         this.y = y;
     }
 
+    public int abscisse() {
+        return this.x;
+    }
+    
     public boolean occupeLaPosition(int x, int y) {
         return (this.x==x) && (this.y==y);
+    }
+
+    public void seDeplacerVerLaDroite() {
+        this.x ++;
+    }
+
+    public void seDeplacerVerLaGauche() {
+        this.x --;
     }
     
 }
