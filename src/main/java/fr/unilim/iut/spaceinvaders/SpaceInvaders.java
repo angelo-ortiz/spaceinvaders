@@ -1,12 +1,11 @@
 package fr.unilim.iut.spaceinvaders;
 
+import fr.unilim.iut.spaceinvaders.moteurjeu.Commande;
+import fr.unilim.iut.spaceinvaders.moteurjeu.Jeu;
 import fr.unilim.iut.spaceinvaders.utils.*;
 
-public class SpaceInvaders {
+public class SpaceInvaders implements Jeu {
 
-    private static final char MARQUE_FIN_LIGNE = '\n';
-    private static final char MARQUE_VIDE = '.';
-    private static final char MARQUE_VAISSEAU = 'V';
     int longueur;
     int hauteur;
     Vaisseau vaisseau;
@@ -14,6 +13,15 @@ public class SpaceInvaders {
     public SpaceInvaders(int longueur, int hauteur) {
         this.longueur = longueur;
         this.hauteur = hauteur;
+    }
+    
+    public void initialiserJeu() {
+        this.positionnerUnNouveauVaisseau(new Dimension(Constante.VAISSEAU_LONGUEUR, Constante.VAISSEAU_HAUTEUR), 
+                new Position(Constante.ESPACEJEU_LONGUEUR/2,Constante.ESPACEJEU_HAUTEUR/2));
+    }
+    
+    public Vaisseau getVaisseau() {
+        return this.vaisseau;
     }
     
     public void positionnerUnNouveauVaisseau(Dimension dimension, Position position) {
@@ -42,7 +50,7 @@ public class SpaceInvaders {
             for (int x = 0; x < longueur; x++) {
                 espaceDeJeu.append(recupererMarqueDeLaPosition(x, y));
             }
-            espaceDeJeu.append(MARQUE_FIN_LIGNE);
+            espaceDeJeu.append(Constante.MARQUE_FIN_LIGNE);
         }
         return espaceDeJeu.toString();
     }
@@ -74,10 +82,26 @@ public class SpaceInvaders {
     private char recupererMarqueDeLaPosition(int x, int y) {
         char marque;
         if (this.aUnVaisseauQuiOccupeLaPosition(x, y))
-            marque = MARQUE_VAISSEAU;
+            marque = Constante.MARQUE_VAISSEAU;
         else
-            marque = MARQUE_VIDE;
+            marque = Constante.MARQUE_VIDE;
         return marque;
+    }
+    
+    @Override
+    public void evoluer(Commande commandeUser) {
+        if (commandeUser.gauche) {
+            this.deplacerVaisseauVersLaGauche();
+        }
+        
+        if (commandeUser.droite) {
+            this.deplacerVaisseauVersLaDroite();
+        }
+    }
+
+    @Override
+    public boolean etreFini() {
+        return false;
     }
 
 }
