@@ -17,14 +17,14 @@ public class SpaceInvaders implements Jeu {
     
     public void initialiserJeu() {
         this.positionnerUnNouveauVaisseau(new Dimension(Constante.VAISSEAU_LONGUEUR, Constante.VAISSEAU_HAUTEUR), 
-                new Position(Constante.ESPACEJEU_LONGUEUR/2,Constante.ESPACEJEU_HAUTEUR/2));
+                new Position(Constante.ESPACEJEU_LONGUEUR/2,Constante.ESPACEJEU_HAUTEUR/2), Constante.VAISSEAU_VITESSE);
     }
     
     public Vaisseau getVaisseau() {
         return this.vaisseau;
     }
     
-    public void positionnerUnNouveauVaisseau(Dimension dimension, Position position) {
+    public void positionnerUnNouveauVaisseau(Dimension dimension, Position position, int vitesse) {
         int x = position.abscisse();
         int y = position.ordonnee();
         
@@ -39,8 +39,7 @@ public class SpaceInvaders implements Jeu {
         if (!estDansEspaceJeu(x, y - hauteurVaisseau + 1))
             throw new DebordementEspaceJeuException("Le vaisseau déborde de l'espace jeu vers le bas à cause de sa hauteur");
 
-        vaisseau = new Vaisseau(longueurVaisseau, hauteurVaisseau);
-        vaisseau.positionner(x, y);
+        vaisseau = new Vaisseau(new Dimension(longueurVaisseau, hauteurVaisseau), new Position(x, y), vitesse);
 
     }
 
@@ -58,12 +57,18 @@ public class SpaceInvaders implements Jeu {
     public void deplacerVaisseauVersLaDroite() {
         if (vaisseau.abscisseLaPlusADroite() < longueur - 1) {
             vaisseau.seDeplacerVerLaDroite();
+            if (!estDansEspaceJeu(vaisseau.abscisseLaPlusADroite(), vaisseau.ordonneeLaPlusHaute())) {
+                vaisseau.positionner(longueur - vaisseau.longueur(), vaisseau.ordonneeLaPlusHaute());
+            }
         }
     }
 
     public void deplacerVaisseauVersLaGauche() {
-        if (vaisseau.abscisseLaPlusAGauche() > 0) {
+        if (0 < vaisseau.abscisseLaPlusAGauche()) {
             vaisseau.seDeplacerVerLaGauche();
+            if (!estDansEspaceJeu(vaisseau.abscisseLaPlusAGauche(), vaisseau.ordonneeLaPlusHaute())) {
+                vaisseau.positionner(0, vaisseau.ordonneeLaPlusHaute());
+            }
         }
     }
 
