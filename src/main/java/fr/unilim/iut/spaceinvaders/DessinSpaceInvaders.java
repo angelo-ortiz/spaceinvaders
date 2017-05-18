@@ -13,15 +13,15 @@ public class DessinSpaceInvaders implements DessinJeu {
     public DessinSpaceInvaders(SpaceInvaders si) {
         this.si = si;
     }
+    
     @Override
     public void dessiner(BufferedImage image) {
         SpaceInvaders spaceInvaders = (SpaceInvaders) si;
-        Vaisseau vaisseau = si.getVaisseau();
+        Vaisseau vaisseau = si.recupererVaisseau();
+        Missile missile = si.recupererMissile();
         
-        Graphics2D crayon = (Graphics2D) image.getGraphics();
-        crayon.setColor(Color.gray);
-        crayon.fillRect(vaisseau.abscisseLaPlusAGauche(), vaisseau.ordonneeLaPlusHaute(), 
-                vaisseau.longueur(), vaisseau.hauteur());
+        dessinerVaisseau(image, vaisseau);
+        dessinerMissile(image, missile);
         /*switch (s) {
         case "PJ":
             crayon.setColor(Color.blue);
@@ -36,6 +36,20 @@ public class DessinSpaceInvaders implements DessinJeu {
         default:
             throw new AssertionError("objet inexistant");
         }*/
+    }
+
+    private void dessinerVaisseau(BufferedImage image, Vaisseau vaisseau) {
+        Graphics2D crayon = (Graphics2D) image.getGraphics();
+        crayon.setColor(Color.gray);
+        crayon.fillRect(vaisseau.abscisseLaPlusAGauche(), vaisseau.ordonneeLaPlusHaute(), 
+                vaisseau.longueur(), vaisseau.hauteur());
+    }
+    
+    private void dessinerMissile(BufferedImage image, Missile missile) {
+        Graphics2D crayon = (Graphics2D) image.getGraphics();
+        crayon.setColor(Color.blue);
+        crayon.fillRect(missile.abscisseLaPlusAGauche(), missile.ordonneeLaPlusHaute(), 
+                missile.longueur(), missile.hauteur());
     }
 
 }
