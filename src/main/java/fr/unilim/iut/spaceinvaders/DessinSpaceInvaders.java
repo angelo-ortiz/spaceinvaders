@@ -21,7 +21,8 @@ public class DessinSpaceInvaders implements DessinJeu {
         Missile missile = si.recupererMissile();
         
         dessinerVaisseau(image, vaisseau);
-        dessinerMissile(image, missile);
+        if (missile != null)
+            dessinerMissile(image, missile);
         /*switch (s) {
         case "PJ":
             crayon.setColor(Color.blue);
@@ -41,14 +42,14 @@ public class DessinSpaceInvaders implements DessinJeu {
     private void dessinerVaisseau(BufferedImage image, Vaisseau vaisseau) {
         Graphics2D crayon = (Graphics2D) image.getGraphics();
         crayon.setColor(Color.gray);
-        crayon.fillRect(vaisseau.abscisseLaPlusAGauche(), vaisseau.ordonneeLaPlusHaute(), 
+        crayon.fillRect(vaisseau.abscisseLaPlusAGauche(), vaisseau.ordonneeLaPlusBasse(), 
                 vaisseau.longueur(), vaisseau.hauteur());
     }
     
     private void dessinerMissile(BufferedImage image, Missile missile) {
         Graphics2D crayon = (Graphics2D) image.getGraphics();
         crayon.setColor(Color.blue);
-        crayon.fillRect(missile.abscisseLaPlusAGauche(), missile.ordonneeLaPlusHaute(), 
+        crayon.fillRect(missile.abscisseLaPlusAGauche(), missile.ordonneeLaPlusBasse(), 
                 missile.longueur(), missile.hauteur());
     }
 
