@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 
+import fr.unilim.iut.spaceinvaders.metier.Envahisseur;
 import fr.unilim.iut.spaceinvaders.metier.Missile;
 import fr.unilim.iut.spaceinvaders.metier.SpaceInvaders;
 import fr.unilim.iut.spaceinvaders.metier.Vaisseau;
@@ -22,10 +23,12 @@ public class DessinSpaceInvaders implements DessinJeu {
         SpaceInvaders spaceInvaders = (SpaceInvaders) si;
         Vaisseau vaisseau = si.recupererVaisseau();
         Missile missile = si.recupererMissile();
+        Envahisseur envahisseur = si.recupererEnvahisseur();
         
         dessinerVaisseau(image, vaisseau);
         if (missile != null)
             dessinerMissile(image, missile);
+        dessinerEnvahisseur(image, envahisseur);
         /*switch (s) {
         case "PJ":
             crayon.setColor(Color.blue);
@@ -56,4 +59,11 @@ public class DessinSpaceInvaders implements DessinJeu {
                 missile.longueur(), missile.hauteur());
     }
 
+    private void dessinerEnvahisseur(BufferedImage image, Envahisseur envahisseur) {
+        Graphics2D crayon = (Graphics2D) image.getGraphics();
+        crayon.setColor(Color.black);
+        crayon.fillRect(envahisseur.abscisseLaPlusAGauche(), envahisseur.ordonneeLaPlusBasse(), 
+                envahisseur.longueur(), envahisseur.hauteur());
+    }
+    
 }
