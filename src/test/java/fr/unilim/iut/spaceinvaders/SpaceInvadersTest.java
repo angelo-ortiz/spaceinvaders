@@ -5,6 +5,9 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
+import fr.unilim.iut.spaceinvaders.metier.Dimension;
+import fr.unilim.iut.spaceinvaders.metier.Position;
+import fr.unilim.iut.spaceinvaders.metier.SpaceInvaders;
 import fr.unilim.iut.spaceinvaders.utils.*;
 
 public class SpaceInvadersTest {

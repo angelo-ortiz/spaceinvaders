@@ -4,6 +4,9 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 
+import fr.unilim.iut.spaceinvaders.metier.Missile;
+import fr.unilim.iut.spaceinvaders.metier.SpaceInvaders;
+import fr.unilim.iut.spaceinvaders.metier.Vaisseau;
 import fr.unilim.iut.spaceinvaders.moteurjeu.DessinJeu;
 
 public class DessinSpaceInvaders implements DessinJeu {

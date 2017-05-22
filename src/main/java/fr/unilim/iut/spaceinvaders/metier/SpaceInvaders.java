@@ -1,5 +1,7 @@
-package fr.unilim.iut.spaceinvaders;
+package fr.unilim.iut.spaceinvaders.metier;
 
+import fr.unilim.iut.spaceinvaders.Constante;
+import fr.unilim.iut.spaceinvaders.Direction;
 import fr.unilim.iut.spaceinvaders.moteurjeu.Commande;
 import fr.unilim.iut.spaceinvaders.moteurjeu.Jeu;
 import fr.unilim.iut.spaceinvaders.utils.*;

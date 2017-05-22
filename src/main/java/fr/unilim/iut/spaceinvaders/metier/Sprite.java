@@ -1,4 +1,6 @@
-package fr.unilim.iut.spaceinvaders;
+package fr.unilim.iut.spaceinvaders.metier;
+
+import fr.unilim.iut.spaceinvaders.Direction;
 
 public abstract class Sprite {
 
