@@ -169,6 +169,8 @@ public class SpaceInvaders implements Jeu {
 
     @Override
     public boolean etreFini() {
+        if (this.aUnMissile() && this.aUnEnvahisseur() && Collision.detecterCollision(envahisseur, missile))
+            return true;
         return false;
     }
 
