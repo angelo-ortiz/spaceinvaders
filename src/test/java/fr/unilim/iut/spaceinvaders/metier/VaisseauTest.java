@@ -1,7 +1,8 @@
-package fr.unilim.iut.spaceinvaders;
+package fr.unilim.iut.spaceinvaders.metier;
 
 import org.junit.Test;
 
+import fr.unilim.iut.spaceinvaders.Direction;
 import fr.unilim.iut.spaceinvaders.metier.Dimension;
 import fr.unilim.iut.spaceinvaders.metier.Position;
 import fr.unilim.iut.spaceinvaders.metier.Vaisseau;

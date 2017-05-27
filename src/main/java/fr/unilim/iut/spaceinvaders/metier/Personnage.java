@@ -3,7 +3,7 @@ package fr.unilim.iut.spaceinvaders.metier;
 import fr.unilim.iut.spaceinvaders.Direction;
 import fr.unilim.iut.spaceinvaders.utils.MissileException;
 
-public abstract class Personnage extends Sprite {
+public class Personnage extends Sprite {
 
     public Personnage(Dimension dimension, Position origine, int vitesse) {
         super(dimension, origine, vitesse);
@@ -23,7 +23,7 @@ public abstract class Personnage extends Sprite {
     
         int ordonneeeOrigineMissile = this.ordonneeLaPlusBasse() - 1;
         if (Direction.BAS_ECRAN.equals(direction))
-            ordonneeeOrigineMissile= this.ordonneeLaPlusHaute() + 1;
+            ordonneeeOrigineMissile= this.ordonneeLaPlusHaute() + dimensionMissile.hauteur();
         /*else
             ordonneeeOrigineMissile= this.ordonneeLaPlusHaute() + 1;
             ordonneeeOrigineMissile= this.ordonneeLaPlusBasse() - 1;*/

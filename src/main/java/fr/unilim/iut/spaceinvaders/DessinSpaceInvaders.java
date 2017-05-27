@@ -29,20 +29,6 @@ public class DessinSpaceInvaders implements DessinJeu {
         if (missile != null)
             dessinerMissile(image, missile);
         dessinerEnvahisseur(image, envahisseur);
-        /*switch (s) {
-        case "PJ":
-            crayon.setColor(Color.blue);
-            crayon.fillOval(x * TAILLE_CASE, y * TAILLE_CASE, TAILLE_CASE,
-                    TAILLE_CASE);
-            break;
-        case "MUR":
-            crayon.setColor(Color.gray);
-            crayon.fillRect(x * TAILLE_CASE, y * TAILLE_CASE, TAILLE_CASE,
-                    TAILLE_CASE);
-            break;
-        default:
-            throw new AssertionError("objet inexistant");
-        }*/
     }
 
     private void dessinerVaisseau(BufferedImage image, Vaisseau vaisseau) {
