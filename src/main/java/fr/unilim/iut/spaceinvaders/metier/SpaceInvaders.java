@@ -1,22 +1,28 @@
 package fr.unilim.iut.spaceinvaders.metier;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import fr.unilim.iut.spaceinvaders.Constante;
 import fr.unilim.iut.spaceinvaders.Direction;
 import fr.unilim.iut.spaceinvaders.moteurjeu.Commande;
 import fr.unilim.iut.spaceinvaders.moteurjeu.Jeu;
-import fr.unilim.iut.spaceinvaders.utils.*;
+import fr.unilim.iut.spaceinvaders.utils.DebordementEspaceJeuException;
+import fr.unilim.iut.spaceinvaders.utils.HorsEspaceJeuException;
+import fr.unilim.iut.spaceinvaders.utils.MissileException;
 
 public class SpaceInvaders implements Jeu {
 
     int longueur;
     int hauteur;
     Vaisseau vaisseau;
-    Missile missile;
+    List<Missile> missiles;
     Envahisseur envahisseur;
 
     public SpaceInvaders(int longueur, int hauteur) {
         this.longueur = longueur;
         this.hauteur = hauteur;
+        this.missiles = new ArrayList<Missile>();
     }
     
     public void initialiserJeu() {
@@ -30,8 +36,8 @@ public class SpaceInvaders implements Jeu {
         return this.vaisseau;
     }
     
-    public Missile recupererMissile() {
-        return this.missile;
+    public List<Missile> recupererMissiles() {
+        return this.missiles;
     }
     
     public Envahisseur recupererEnvahisseur() {
@@ -118,12 +124,19 @@ public class SpaceInvaders implements Jeu {
         return this.aUnVaisseau() && vaisseau.occupeLaPosition(x, y);
     }
     
-    private boolean aUnMissile() {
-       return missile != null;
+    private boolean aDesMissiles() {
+       return !this.missiles.isEmpty();
     }
     
     private boolean aUnMissileQuiOccupeLaPosition(int x, int y) {
-        return this.aUnMissile() && missile.occupeLaPosition(x, y);
+        
+        if ( this.aDesMissiles() ) {
+            for (Missile missile : this.missiles) {
+                if (missile.occupeLaPosition(x, y))
+                    return true;
+            }
+        }
+        return false;
     }
     
     private boolean aUnEnvahisseur() {
@@ -157,11 +170,11 @@ public class SpaceInvaders implements Jeu {
             this.deplacerVaisseauVersLaDroite();
         }
         
-        if (commandeUser.tir && !this.aUnMissile()) {
+        if (commandeUser.tir) {
             this.tirerUnMissile(new Dimension(Constante.MISSILE_LONGUEUR, Constante.MISSILE_HAUTEUR), Constante.MISSILE_VITESSE);
         }
         
-        if (this.aUnMissile())
+        if (this.aDesMissiles())
             this.deplacerMissile(Direction.HAUT_ECRAN);
         
         this.deplacerEnvahisseur();
@@ -169,8 +182,12 @@ public class SpaceInvaders implements Jeu {
 
     @Override
     public boolean etreFini() {
-        if (this.aUnMissile() && this.aUnEnvahisseur() && Collision.detecterCollision(envahisseur, missile))
-            return true;
+        if (this.aUnEnvahisseur() && this.aDesMissiles()) {
+            for (Missile missile : this.missiles) {
+                if ( Collision.detecterCollision(envahisseur, missile) )
+                return true;
+            }
+        }
         return false;
     }
 
@@ -178,13 +195,28 @@ public class SpaceInvaders implements Jeu {
         if ( (vaisseau.hauteur() + dimensionMissile.hauteur()) > this.hauteur ) {
             throw new MissileException("Pas assez de hauteur libre entre le vaisseau et le haut de l'espace jeu pour tirer le missile");
         }
-        this.missile = this.vaisseau.tirerUnMissile(dimensionMissile, vitesseMissile, Direction.HAUT);
+        this.missiles.add( this.vaisseau.tirerUnMissile(dimensionMissile, vitesseMissile, Direction.HAUT) );
     }
 
     public void deplacerMissile(Direction direction) {
-        this.missile.deplacerVerticalementVers(direction);
-        if (this.missile.ordonneeLaPlusHaute() < 0)
-            this.missile = null;
+        for (Missile missile : this.missiles) {
+            missile.deplacerVerticalementVers(direction);
+        }
+        supprrimerMissilesHorsEspaceDeJeu();
+    }
+
+    private void supprrimerMissilesHorsEspaceDeJeu() {
+        boolean continuation;
+        do {
+            continuation = false;
+            for (Missile missile : this.missiles) {
+                if (missile.ordonneeLaPlusHaute() < 0) {
+                    this.missiles.remove(missile);
+                    continuation = true;
+                    break;
+                }
+            }
+        } while (continuation);
     }
 
 }
