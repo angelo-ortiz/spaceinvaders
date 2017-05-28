@@ -6,13 +6,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 public class CollisionTest {
-
-    Collision collision;
-    
-    @Before
-    public void initialisation() {
-        collision = new Collision();
-    }
     
     @Test
     public void test_PersonnageCollisionneAvecMissile_DetecterCollision() {
@@ -20,7 +13,7 @@ public class CollisionTest {
        Personnage personnage = new Personnage(new Dimension(7,2),new Position(5,2),3);
        Missile missile = new Missile(new Dimension(3,2),new Position(10,3),3);
        
-       boolean ilYaCollision = collision.detecterCollision(personnage, missile);
+       boolean ilYaCollision = Collision.detecterCollision(personnage, missile);
        
        assertEquals(ilYaCollision, true);
        
@@ -32,7 +25,7 @@ public class CollisionTest {
        Personnage personnage = new Personnage(new Dimension(7,2),new Position(5,2),3);
        Missile missile = new Missile(new Dimension(3,2),new Position(10,9),3);
        
-       boolean ilYaCollision = collision.detecterCollision(personnage, missile);
+       boolean ilYaCollision = Collision.detecterCollision(personnage, missile);
        
        assertEquals(ilYaCollision, false);
        
@@ -44,7 +37,7 @@ public class CollisionTest {
        Personnage personnage = new Personnage(new Dimension(7,2),new Position(5,2),3);
        Missile missile = new Missile(new Dimension(3,2),new Position(10,4),3);
        
-       boolean ilYaCollision = collision.detecterCollision(personnage, missile);
+       boolean ilYaCollision = Collision.detecterCollision(personnage, missile);
        
        assertEquals(ilYaCollision, false);
        

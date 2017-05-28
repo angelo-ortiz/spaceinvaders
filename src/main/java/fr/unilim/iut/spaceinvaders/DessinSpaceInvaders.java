@@ -24,12 +24,13 @@ public class DessinSpaceInvaders implements DessinJeu {
         SpaceInvaders spaceInvaders = (SpaceInvaders) si;
         Vaisseau vaisseau = si.recupererVaisseau();
         List<Missile> missiles = si.recupererMissiles();
-        Envahisseur envahisseur = si.recupererEnvahisseur();
+        List<Envahisseur> envahisseurs = si.recupererEnvahisseurs();
         
         dessinerVaisseau(image, vaisseau);
         if (missiles != null)
-            dessinerMissile(image, missiles);
-        dessinerEnvahisseur(image, envahisseur);
+            dessinerMissiles(image, missiles);
+        if (envahisseurs != null)
+            dessinerEnvahisseurs(image, envahisseurs);
     }
 
     private void dessinerVaisseau(BufferedImage image, Vaisseau vaisseau) {
@@ -39,7 +40,7 @@ public class DessinSpaceInvaders implements DessinJeu {
                 vaisseau.longueur(), vaisseau.hauteur());
     }
     
-    private void dessinerMissile(BufferedImage image, List<Missile> missiles) {
+    private void dessinerMissiles(BufferedImage image, List<Missile> missiles) {
         Graphics2D crayon = (Graphics2D) image.getGraphics();
         crayon.setColor(Color.blue);
         for (Missile missile : missiles) {
@@ -48,11 +49,13 @@ public class DessinSpaceInvaders implements DessinJeu {
         }
     }
 
-    private void dessinerEnvahisseur(BufferedImage image, Envahisseur envahisseur) {
+    private void dessinerEnvahisseurs(BufferedImage image, List<Envahisseur> envahisseurs) {
         Graphics2D crayon = (Graphics2D) image.getGraphics();
         crayon.setColor(Color.black);
-        crayon.fillRect(envahisseur.abscisseLaPlusAGauche(), envahisseur.ordonneeLaPlusBasse(), 
-                envahisseur.longueur(), envahisseur.hauteur());
+        for (Envahisseur envahisseur : envahisseurs) {
+            crayon.fillRect(envahisseur.abscisseLaPlusAGauche(), envahisseur.ordonneeLaPlusBasse(),
+                    envahisseur.longueur(), envahisseur.hauteur());
+        }
     }
     
 }
