@@ -19,12 +19,14 @@ public class SpaceInvaders implements Jeu {
     Vaisseau vaisseau;
     List<Missile> missiles;
     List<Envahisseur> envahisseurs;
+    int score;
 
     public SpaceInvaders(int longueur, int hauteur) {
         this.longueur = longueur;
         this.hauteur = hauteur;
         this.missiles = new ArrayList<Missile>();
         this.envahisseurs = new ArrayList<Envahisseur>();
+        this.score = 0;
     }
     
     public void initialiserJeu() {
@@ -215,6 +217,8 @@ public class SpaceInvaders implements Jeu {
 
     @Override
     public void evoluer(Commande commandeUser) {
+        detecterCollisions();
+        
         if (commandeUser.gauche) {
             this.deplacerVaisseauVersLaGauche();
         }
@@ -227,7 +231,8 @@ public class SpaceInvaders implements Jeu {
             this.tirerUnMissile(new Dimension(Constante.MISSILE_LONGUEUR, Constante.MISSILE_HAUTEUR), Constante.MISSILE_VITESSE);
         }
         
-        this.deplacerEnvahisseurs();
+        if (!this.envahisseurs.isEmpty())
+            this.deplacerEnvahisseurs();
         
         this.deplacerMissiles(Direction.HAUT_ECRAN);
         
@@ -236,11 +241,10 @@ public class SpaceInvaders implements Jeu {
 
     @Override
     public boolean etreFini() {
-        detecterCollisions();
         return !this.aDesEnvahisseurs();
     }
 
-    private void detecterCollisions() {
+    public void detecterCollisions() {
         boolean continuation;
         do {
             continuation = false;
@@ -249,6 +253,7 @@ public class SpaceInvaders implements Jeu {
                     if (Collision.detecterCollision(envahisseur, missile)) {
                         this.envahisseurs.remove(envahisseur);
                         this.missiles.remove(missile);
+                        actualiserScore();
                         continuation = true;
                         break;
                     }
@@ -259,11 +264,25 @@ public class SpaceInvaders implements Jeu {
         } while (continuation);
     }
 
+    private void actualiserScore() {
+        this.score += Constante.SCORE_ENVAHISSEUR_CLASSIQUE;
+    }
+
+    private boolean ilYaDesMissilesEnBasDecran() {
+        for (Missile missile : this.missiles) {
+            if (missile.ordonneeLaPlusHaute() >= this.hauteur / 2) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
     public void tirerUnMissile(Dimension dimensionMissile, int vitesseMissile) {
         if ( (vaisseau.hauteur() + dimensionMissile.hauteur()) > this.hauteur ) {
             throw new MissileException("Pas assez de hauteur libre entre le vaisseau et le haut de l'espace jeu pour tirer le missile");
         }
-        this.missiles.add( this.vaisseau.tirerUnMissile(dimensionMissile, vitesseMissile, Direction.HAUT) );
+        if (!ilYaDesMissilesEnBasDecran())
+            this.missiles.add( this.vaisseau.tirerUnMissile(dimensionMissile, vitesseMissile, Direction.HAUT) );
     }
 
     public void deplacerMissiles(Direction direction) {
@@ -285,6 +304,10 @@ public class SpaceInvaders implements Jeu {
                 }
             }
         } while (continuation);
+    }
+
+    public int getScore() {
+        return this.score;
     }
 
 }

@@ -16,7 +16,7 @@ public class Constante {
     public static final int ENVAHISSEUR_LONGUEUR = 40;
     public static final int ENVAHISSEUR_HAUTEUR = 20;
     public static final int ENVAHISSEUR_VITESSE = 5;
-    public static final int ENVAHISSEUR_ESPACE_COTES = 120;
+    public static final int ENVAHISSEUR_ESPACE_BORDURES = 120;
     
     public static final char MARQUE_FIN_LIGNE = '\n';
     public static final char MARQUE_VIDE = '.';
@@ -24,4 +24,7 @@ public class Constante {
     public static final char MARQUE_MISSILE = 'M';
     public static final char MARQUE_ENVAHISSEUR = 'E';
     
+    public static final int SCORE_ENVAHISSEUR_CLASSIQUE = 40;
+    public static final int SCORE_ABSCISSE = 10;
+    public static final int SCORE_ORDONNEE = 590;
 }
