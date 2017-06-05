@@ -61,7 +61,11 @@ public abstract class Sprite {
     }
     
     public void deplacerHorizontalementVers(Direction direction) {
-        this.origine.changerAbscisse(this.origine.abscisse() + direction.valeur() * vitesse);
+        this.deplacerHorizontalementVers(direction, vitesse);
+    }
+    
+    public void deplacerHorizontalementVers(Direction direction, int deplacement) {
+        this.origine.changerAbscisse(this.origine.abscisse() + direction.valeur() * deplacement);
     }
     
     public void deplacerVerticalementVers(Direction direction) {

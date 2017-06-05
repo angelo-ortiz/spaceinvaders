@@ -16,6 +16,7 @@ import fr.unilim.iut.spaceinvaders.moteurjeu.DessinJeu;
 
 public class DessinSpaceInvaders implements DessinJeu {
 
+    private static final String NOM_POLICE = "TimesRoman";
     private SpaceInvaders si;
     
     public DessinSpaceInvaders(SpaceInvaders si) {
@@ -24,20 +25,22 @@ public class DessinSpaceInvaders implements DessinJeu {
     
     @Override
     public void dessiner(BufferedImage image) {
-        SpaceInvaders spaceInvaders = (SpaceInvaders) si;
+        SpaceInvaders spaceInvaders = si;
         Vaisseau vaisseau = si.recupererVaisseau();
-        List<Missile> missiles = si.recupererMissiles();
+        List<Missile> missilesVaisseau = si.recupererMissilesVaisseau();
         List<Envahisseur> envahisseurs = si.recupererEnvahisseurs();
+        List<Missile> missilesEnvahisseurs = si.recupererMissilesEnvahisseurs();
+        boolean jeuFini = si.etreFini();
         
-        
-        if (!envahisseurs.isEmpty()) {
+        if (!jeuFini) {
             dessinerVaisseau(image, vaisseau);
-            dessinerMissiles(image, missiles);
+            dessinerMissiles(image, missilesVaisseau);
             dessinerEnvahisseurs(image, envahisseurs);
+            dessinerMissiles(image, missilesEnvahisseurs);
         } else {
-            dessinerMessageFinPartie(image);
+            dessinerMessageFinPartie(image, envahisseurs.isEmpty());
         }
-        dessinerScore(image, spaceInvaders.getScore(), envahisseurs.isEmpty());
+        dessinerScore(image, spaceInvaders.getScore(), jeuFini);
     }
 
     private void dessinerVaisseau(BufferedImage image, Vaisseau vaisseau) {
@@ -65,29 +68,35 @@ public class DessinSpaceInvaders implements DessinJeu {
         }
     }
     
-    private void dessinerMessageFinPartie(BufferedImage image) {
+    private void dessinerMessageFinPartie(BufferedImage image, boolean victoire) {
         Graphics crayon = image.getGraphics();
-        Position position = this.getPositionMessage(crayon, "Game over");
+        Position positionStandard = this.getPositionMessage(crayon, "Game over");
         crayon.setColor(Color.red);
-        crayon.drawString("Game over", position.abscisse(), position.ordonnee());
+        crayon.drawString("Game over", positionStandard.abscisse(), positionStandard.ordonnee());
+        String message = "Vous avez perdu :/";
+        if (victoire) {
+            message = "Vous avez gagné :D";
+            crayon.setColor(Color.green);
+        }
+        Position positionResultat = this.getPositionMessage(crayon, message);
+        crayon.drawString(message, positionResultat.abscisse(), positionResultat.ordonnee() + 150);
     }
     
     private Position getPositionMessage(Graphics crayon, String message) {
-        crayon.setFont(new Font("TimesRoman", Font.PLAIN, 80));
+        crayon.setFont(new Font(NOM_POLICE, Font.PLAIN, 80));
         int longueurChaine = crayon.getFontMetrics().stringWidth(message);
         return new Position(Constante.ESPACEJEU_LONGUEUR/2 - longueurChaine /2, Constante.ESPACEJEU_HAUTEUR/2);
     }
     
     private void dessinerScore(BufferedImage image, int score, boolean jeuFini) {
         Graphics crayon = image.getGraphics();
-        //Position position = this.getPositionMessage(crayon);
         crayon.setColor(Color.black);
         if (jeuFini) {
-            crayon.setFont(new Font("TimesRoman", Font.PLAIN, 80));
-            Position position = this.getPositionMessage(crayon, "Game over");
+            crayon.setFont(new Font(NOM_POLICE, Font.PLAIN, 80));
+            Position position = this.getPositionMessage(crayon, "Score : 400");
             crayon.drawString("Score : " + score, position.abscisse(), Constante.SCORE_ORDONNEE);
         } else {
-            crayon.setFont(new Font("TimesRoman", Font.PLAIN, 30));
+            crayon.setFont(new Font(NOM_POLICE, Font.PLAIN, 30));
             crayon.drawString("Score : " + score, Constante.SCORE_ABSCISSE, Constante.SCORE_ORDONNEE);
         }
     }
